@@ -1,8 +1,9 @@
 Future Engineers 2026
 ====
-
-This repository contains engineering materials of a self-driven vehicle's model participating in the WRO Future Engineers competition in the season 2022.
-
+Team name: Tadam
+====
+Team members: Tursynova Dariya, Mukiyanova Alima
+====
 ## Content
 
 * `t-photos` contains 2 photos of the team (an official one and one funny photo with all team members)
