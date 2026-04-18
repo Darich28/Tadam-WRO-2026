@@ -1,9 +1,9 @@
   Future Engineers 2026
   ====
-    Team name: Tadam
-==
-Team members: Tursynova Dariya, Mukiyanova Alima
-====
+  Team name: Tadam
+  ==
+  Team members: Tursynova Dariya, Mukiyanova Alima
+  ====
 ## Content
 
 * `t-photos` contains 2 photos of the team (an official one and one funny photo with all team members)
