@@ -18,6 +18,7 @@
 
 Our robot is built on the LEGO EV3 platform and is designed for autonomous navigation in the Future Engineers competition.
 Hardware Overview
+
 The vehicle consists of the following main components:
 EV3 Intelligent Brick – the main controller that processes all data and runs the program.
 EV3 Rechargeable Battery – provides power to the entire system.
@@ -38,6 +39,7 @@ Sensor Module
 Reads and processes data from ultrasonic and gyro sensors.
 Navigation Module
 Combines sensor data and movement logic to follow the track, handle turns, and avoid obstacles.
+
 How It Works
 The robot starts moving forward using the rear-wheel drive system.
 Ultrasonic sensors continuously measure the distance to walls/obstacles.
