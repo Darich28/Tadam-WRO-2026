@@ -98,6 +98,11 @@ We also tested a tank drive system, but it was less stable and caused more error
 The main trade-off is that Ackermann steering is harder to build and requires careful calibration. However, it gives better control and consistency.
 
 We tested different speeds and turning angles to improve alignment before turns and reduce mistakes during navigation.
+<img width="360" height="580" alt="image" src="https://github.com/user-attachments/assets/2544d43e-1e22-48f4-a05b-fea51c8d2abe" />
+<img width="570" height="580" alt="image" src="https://github.com/user-attachments/assets/1913deb3-8672-463c-b63e-291f41e8c369" />
+<img width="570" height="550" alt="image" src="https://github.com/user-attachments/assets/2c044c36-6c07-466e-84ea-c0ce9ddfa5dd" />
+<img width="570" height="580" alt="image" src="https://github.com/user-attachments/assets/fd93274c-a39e-48bf-9f24-4f0a4b701c75" />
+
 
 Power and Sensor Architecture
 -----
