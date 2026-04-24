@@ -2,6 +2,8 @@
   ====
   Team name: Tadam
   ==
+  <img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/2570ee8e-a9ab-41df-b66a-fc46680e45b8" />
+
   Team members: Tursynova Dariya, Mukiyanova Alima
   ====
 ## Content
