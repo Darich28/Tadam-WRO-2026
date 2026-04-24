@@ -1,0 +1,205 @@
+folder "prjs" "FutureEngineers"
+include "KZ motion"
+import "Mods\Ultrasonic"
+import "Mods\Gyro"
+
+' ============================================================
+' Порт 1 : Ультразвук ПРАВЫЙ
+' Порт 2 : Ультразвук ЛЕВЫЙ
+' Порт 3 : Гироскоп
+' Мотор A : Руль  (+ = вправо, - = влево)
+' Мотор B : Привод
+' Мотор C : Привод
+' ============================================================
+
+' -------- НАСТРОЙКИ --------
+@SPEED        = 70   ' скорость движения B и C
+@WALL_MAX     = 80   ' порог "стена потеряна", см
+@SAFE_DIST    = 25   ' безопасное расстояние до стены, см
+@TURN_DEG     = 83   ' градусов гиро для поворота 90°
+@KP           = 2.0  ' коэф. центрирования
+@KD           = 3.0  ' дифф. коэф. центрирования
+@KP_AVOID     = 2.0  ' коэф. избегания стены при повороте
+@STEER_MAX    = 60   ' макс. мощность руля
+@TOTAL_TURNS  = 12   ' 3 круга x 4 поворота
+@COOLDOWN_MAX = 50   ' итераций паузы после поворота (~1 сек)
+
+@turns   = 0
+@oldErr  = 0
+@cooldown = 0
+
+' ============================================================
+' ФУНКЦИЯ: Поворот направо на 90° по гироскопу
+' Во время поворота следит за левой стеной чтобы не врезаться
+' ============================================================
+Function TurnRight()
+  Gyro.reset(3)
+  exit = 0
+  While exit = 0
+    Gyro.getAngle(3, curA)
+    Ultrasonic.getCm(2, dL)
+
+    ' Базовый руль вправо
+    steer = @STEER_MAX
+
+    ' Если левая стена близко — смягчаем поворот
+    If dL < @SAFE_DIST Then
+      avoid = (@SAFE_DIST - dL) * @KP_AVOID
+      steer = steer - avoid
+      If steer < 0 Then
+        steer = 0
+      EndIf
+    EndIf
+
+    MotorA.StartPower(steer)
+    MotorB.StartPower(@SPEED)
+    MotorC.StartPower(@SPEED)
+
+    If curA >= @TURN_DEG Then
+      exit = 1
+    EndIf
+    Program.Delay(10)
+  EndWhile
+  MotorA.StartPower(0)
+EndFunction
+
+' ============================================================
+' ФУНКЦИЯ: Поворот налево на 90° по гироскопу
+' Во время поворота следит за правой стеной чтобы не врезаться
+' ============================================================
+Function TurnLeft()
+  Gyro.reset(3)
+  exit = 0
+  While exit = 0
+    Gyro.getAngle(3, curA)
+    Ultrasonic.getCm(1, dR)
+
+    ' Базовый руль влево
+    steer = 0 - @STEER_MAX
+
+    ' Если правая стена близко — смягчаем поворот
+    If dR < @SAFE_DIST Then
+      avoid = (@SAFE_DIST - dR) * @KP_AVOID
+      steer = steer + avoid
+      If steer > 0 Then
+        steer = 0
+      EndIf
+    EndIf
+
+    MotorA.StartPower(steer)
+    MotorB.StartPower(@SPEED)
+    MotorC.StartPower(@SPEED)
+
+    If curA <= 0 - @TURN_DEG Then
+      exit = 1
+    EndIf
+    Program.Delay(10)
+  EndWhile
+  MotorA.StartPower(0)
+EndFunction
+
+' ============================================================
+' СТАРТ: ждём кнопку
+' ============================================================
+LCD.StopUpdate()
+LCD.Clear()
+LCD.Write(10, 30, "Future Engineers")
+LCD.Write(10, 50, "Нажми ENTER")
+LCD.Update()
+
+ex = 0
+While ex = 0
+  tak = Buttons.GetClicks()
+  If tak = "E" Then
+    ex = 1
+  EndIf
+EndWhile
+
+LCD.StopUpdate()
+LCD.Clear()
+LCD.Write(10, 50, "Инициализация...")
+LCD.Update()
+
+Gyro.reset(3)
+Motor.ResetCount("ABC")
+@cooldown = 60
+EV3.SetLEDColor("GREEN", "NORMAL")
+
+' ============================================================
+' ГЛАВНЫЙ ЦИКЛ
+' ============================================================
+While @turns < @TOTAL_TURNS
+
+  Ultrasonic.getCm(1, distR)
+  Ultrasonic.getCm(2, distL)
+
+  If distR > 250 Then
+    distR = 250
+  EndIf
+  If distL > 250 Then
+    distL = 250
+  EndIf
+
+  ' -- Cooldown после старта / после поворота --
+  If @cooldown > 0 Then
+    @cooldown = @cooldown - 1
+    MotorA.StartPower(0)
+    MotorB.StartPower(@SPEED)
+    MotorC.StartPower(@SPEED)
+
+  ' -- Обнаружение поворота: стена пропала --
+  ElseIf distL > @WALL_MAX And distR < @WALL_MAX Then
+    ' Левая стена пропала → поворот налево
+    TurnLeft()
+    @turns    = @turns + 1
+    @oldErr   = 0
+    @cooldown = @COOLDOWN_MAX
+
+  ElseIf distR > @WALL_MAX And distL < @WALL_MAX Then
+    ' Правая стена пропала → поворот направо
+    TurnRight()
+    @turns    = @turns + 1
+    @oldErr   = 0
+    @cooldown = @COOLDOWN_MAX
+Else
+    ' -- Обе стены видны: держимся по центру --
+    ' err > 0: правая стена дальше → стоим левее → рулим вправо
+    ' err < 0: левая стена дальше  → стоим правее → рулим влево
+    err    = distR - distL
+    P      = err * @KP
+    D      = (err - @oldErr) * @KD
+    steer  = P + D
+    @oldErr = err
+
+    If steer > @STEER_MAX Then
+      steer = @STEER_MAX
+    EndIf
+    If steer < 0 - @STEER_MAX Then
+      steer = 0 - @STEER_MAX
+    EndIf
+
+    MotorA.StartPower(steer)
+    MotorB.StartPower(@SPEED)
+    MotorC.StartPower(@SPEED)
+  EndIf
+
+  ' -- Дисплей --
+  LCD.StopUpdate()
+  LCD.Clear()
+  LCD.Write(5,  10, distR)
+  LCD.Write(70, 10, distL)
+  LCD.Write(5,  30, @turns)
+  LCD.Update()
+
+  Program.Delay(20)
+EndWhile
+
+' ============================================================
+' ФИНИШ
+' ============================================================
+Motor.Stop("ABC", "true")
+EV3.SetLEDColor("GREEN", "FLASH")
+LCD.StopUpdate()
+LCD.Clear()
+LCD.Write(20, 50, "ФИНИШ")
+LCD.Update()
