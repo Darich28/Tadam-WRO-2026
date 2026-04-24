@@ -110,9 +110,6 @@ We tried to balance accuracy and energy consumption. Adding more sensors could i
 We calibrate the gyro before each run and apply simple filtering to ultrasonic data to reduce noise.
 
 If one sensor gives unstable readings, the robot relies on the other sensors to maintain stable behavior.
-### Сравнение источников питания LEGO Mindstorms EV3
-
-В этой таблице приведено сравнение фирменного перезаряжаемого литий-ионного аккумулятора (LEGO 45501) и стандартных щелочных батареек типа АА (пальчиковых).
 
 ### Power Source Comparison: LEGO Mindstorms EV3
 
