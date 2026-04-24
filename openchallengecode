@@ -1,0 +1,269 @@
+include "KZmotion"
+import "Mods\Ultrasonic"
+import "Mods\Gyro"
+
+@speed = -60
+@turnEntrySpeed = -40
+@turnFastSpeed = -35
+@turnSlowSpeed = -32
+@turnExitSpeed = -42
+
+@maxSteer = 23
+@turnSteerSlow = 13
+@searchSteer = 7
+
+@cornerOpenDist = 115
+@cornerOpenMargin = 18
+@wallSeenDist = 70
+@cornerConfirmCount = 8
+
+@turnFastAngle = 3
+@turnFinalAngle = 9
+@turnMinAngle = 3
+
+@turnLeadMs = 90
+@turnFastTimeout = 1300
+@turnSlowTimeout = 600
+@turnMinTimeout = 300
+@findCorridorTimeout = 700
+@alignTimeout = 450
+@settleMs = 140
+@noTurnDelay = 1200
+
+@kp = 90.25
+@kd = 0.01
+@turnKp = 1.35
+@turnKd = 0.1
+
+@oldE = 0
+@turns = 0
+@lastTurnTime = 0
+@cornerVotes = 0
+@cornerDir = 0
+
+Motor.ResetCount("A")
+Motor.Stop("BC", "true")
+
+Gyro.reset(4)
+Program.Delay(700)
+
+LCD.Clear()
+LCD.Write(10, 40, "Press ENTER")
+LCD.Write(15, 20, EV3.BatteryVoltage)
+Ultrasonic.getCm(1, tmpL)
+Ultrasonic.getCm(2, tmpR)
+LCD.Write(65, 70, tmpL)
+LCD.Write(95, 90, tmpR)
+LCD.Update()
+
+Speaker.Tone(80, 600, 200)
+
+While Buttons.Current <> ""
+EndWhile
+While Buttons.Current = ""
+EndWhile
+
+Ultrasonic.getCm(1, tmpL)
+Ultrasonic.getCm(2, tmpR)
+@oldE = tmpR - tmpL
+
+Function ReadWalls(out number lCm, out number rCm)
+  Ultrasonic.getCm(1, l1)
+  Ultrasonic.getCm(2, r1)
+  Program.Delay(5)
+
+  Ultrasonic.getCm(1, l2)
+  Ultrasonic.getCm(2, r2)
+  Program.Delay(5)
+
+  Ultrasonic.getCm(1, l3)
+  Ultrasonic.getCm(2, r3)
+
+  lCm = (l1 + l2 + l3) / 3
+  rCm = (r1 + r2 + r3) / 3
+EndFunction
+
+
+Function Steer(in number angle)
+  angle = 0 - angle
+
+  If angle > @maxSteer Then
+    angle = @maxSteer
+  ElseIf angle < -@maxSteer Then
+    angle = 0 - @maxSteer
+  EndIf
+
+  curA = MotorA.GetTacho()
+  err = angle - curA
+  pwr = err * 2
+
+  If pwr > 80 Then
+    pwr = 80
+  ElseIf pwr < -80 Then
+    pwr = -80
+  EndIf
+
+  MotorA.StartPower(pwr)
+EndFunction
+
+
+Function FollowCenter(in number lCm, in number rCm)
+  E = rCm - lCm
+  P = E * @kp
+  D = (E - @oldE) * @kd
+  steer = P + D
+  @oldE = E
+
+  Steer(steer)
+  Motor.StartPower("BC", @speed)
+EndFunction
+
+
+Function UpdateCornerVote(in number lCm, in number rCm, out number doTurn, out number dir)
+  doTurn = 0
+  dir = @cornerDir
+
+  If Time.Get2() - @lastTurnTime > @noTurnDelay Then
+    If lCm > @cornerOpenDist And (lCm - rCm) > @cornerOpenMargin Then
+      If @cornerDir = -1 Then
+        @cornerVotes = @cornerVotes + 1
+      Else
+        @cornerVotes = 1
+      EndIf
+      @cornerDir = -1
+
+    ElseIf rCm > @cornerOpenDist And (rCm - lCm) > @cornerOpenMargin Then
+      If @cornerDir = 1 Then
+        @cornerVotes = @cornerVotes + 1
+      Else
+        @cornerVotes = 1
+      EndIf
+      @cornerDir = 1
+
+    Else
+      @cornerVotes = 0
+    EndIf
+
+    If @cornerVotes >= @cornerConfirmCount Then
+      doTurn = 1
+      dir = @cornerDir
+    EndIf
+
+  Else
+    @cornerVotes = 0
+  EndIf
+EndFunction
+
+
+Function TurnCorner(in number dir)
+  t0 = Time.Get2()
+  While Time.Get2() - t0 < @turnLeadMs
+    Steer(0)
+    Motor.StartPower("BC", @turnEntrySpeed)
+    Program.Delay(10)
+  EndWhile
+
+  Gyro.getAngle(4, startA)
+  delta = 0
+
+  tFast = Time.Get2()
+  While delta < @turnFastAngle And Time.Get2() - tFast < @turnFastTimeout
+    Steer(dir * @maxSteer)
+    Motor.StartPower("BC", @turnFastSpeed)
+    Gyro.getAngle(4, curA)
+    delta = Math.Abs(curA - startA)
+    Program.Delay(10)
+  EndWhile
+
+  tSlow = Time.Get2()
+  While delta < @turnFinalAngle And Time.Get2() - tSlow < @turnSlowTimeout
+    Steer(dir * @turnSteerSlow)
+    Motor.StartPower("BC", @turnSlowSpeed)
+    Gyro.getAngle(4, curA)
+    delta = Math.Abs(curA - startA)
+    Program.Delay(10)
+  EndWhile
+
+  tMin = Time.Get2()
+  While delta < @turnMinAngle And Time.Get2() - tMin < @turnMinTimeout
+    Steer(dir * @turnSteerSlow)
+    Motor.StartPower("BC", @turnSlowSpeed)
+    Gyro.getAngle(4, curA)
+    delta = Math.Abs(curA - startA)
+    Program.Delay(10)
+  EndWhile
+  seenCount = 0
+  tFind = Time.Get2()
+  While seenCount < 4 And Time.Get2() - tFind < @findCorridorTimeout
+    ReadWalls(tmpL, tmpR)
+    If tmpL < @wallSeenDist And tmpR < @wallSeenDist Then
+      seenCount = seenCount + 1
+    Else
+      seenCount = 0
+    EndIf
+    
+    Steer(dir * @searchSteer)
+    Motor.StartPower("BC", @turnSlowSpeed)
+    Program.Delay(10)
+  EndWhile
+
+  okCount = 0
+  tAlign = Time.Get2()
+  While okCount < 6 And Time.Get2() - tAlign < @alignTimeout
+    ReadWalls(tmpL, tmpR)
+    E = tmpR - tmpL
+    P = E * @turnKp
+    D = (E - @oldE) * @turnKd
+    steer = P + D
+    @oldE = E
+
+    Steer(steer)
+    Motor.StartPower("BC", @turnExitSpeed)
+
+    If tmpL < @wallSeenDist And tmpR < @wallSeenDist And Math.Abs(E) < 8 Then
+      okCount = okCount + 1
+    Else
+      okCount = 0
+    EndIf
+
+    Program.Delay(10)
+  EndWhile
+
+  tSettle = Time.Get2()
+  While Time.Get2() - tSettle < @settleMs
+    ReadWalls(tmpL, tmpR)
+    E = tmpR - tmpL
+    Steer(E * @turnKp)
+    Motor.StartPower("BC", @turnExitSpeed)
+    Program.Delay(10)
+  EndWhile
+
+  ReadWalls(tmpL, tmpR)
+  @oldE = tmpR - tmpL
+  @lastTurnTime = Time.Get2()
+  @cornerVotes = 0
+  @turns = @turns + 1
+EndFunction
+
+While @turns < 12
+  ReadWalls(L, R)
+  UpdateCornerVote(L, R, doTurn, dir)
+
+  If doTurn = 1 Then
+    TurnCorner(dir)
+  Else
+    FollowCenter(L, R)
+  EndIf
+
+  Program.Delay(15)
+EndWhile
+
+t0 = Time.Get2()
+While Time.Get2() - t0 < 500
+  Steer(0)
+  Motor.StartPower("BC", @speed)
+  Program.Delay(10)
+EndWhile
+
+Motor.Stop("BC", "true")
+MotorA.StartPower(0)
