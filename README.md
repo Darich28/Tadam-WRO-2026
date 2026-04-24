@@ -19,7 +19,7 @@
 * `Video` This section contains links to videos demonstrating our robot in motion and providing a detailed explanation of its functions.
 -------
 
-!['src'](video) 
+!['src'](src) 
 -------
 * `src` This section includes the algorithms and scripts responsible for the robot's mobility.
 -------
