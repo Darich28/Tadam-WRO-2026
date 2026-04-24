@@ -11,7 +11,7 @@
 !['Vehicle photos'](v-photos) 
 -------
 !['Video'](video) 
-
+-------
 * `schemes` contains one or several schematic diagrams in form of JPEG, PNG or PDF of the electromechanical components illustrating all the elements (electronic components and motors) used in the vehicle and how they connect to each other.
 * `src` contains code of control software for all components which were programmed to participate in the competition
 * `models` is for the files for models used by 3D printers, laser cutting machines and CNC machines to produce the vehicle elements. If there is nothing to add to this location, the directory can be removed.
