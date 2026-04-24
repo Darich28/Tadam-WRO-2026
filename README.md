@@ -11,8 +11,9 @@
 * `Our team photos` Meet the team: photos included in this file.
 -------
 !['Vehicle photos'](v-photos)
-* `Vehicle photos` Vehicle photos: Full 360-degree views of our self-driving car.
 -------
+* `Vehicle photos` Vehicle photos: Full 360-degree views of our self-driving car.
+  
 !['Video'](video) 
 -------
 * `Video` This section contains links to videos demonstrating our robot in motion and providing a detailed explanation of its functions.
