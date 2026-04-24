@@ -43,14 +43,17 @@ EV3 Rechargeable Battery – provides power to the entire system.
 
 Drive System:
 Two medium motors connected through a gear system and differential, powering the rear wheels (rear-wheel drive).
-<img width="237" height="234" alt="Снимок экрана 2026-04-24 104155" src="https://github.com/user-attachments/assets/e610b322-0506-4be0-ad19-74bbd09cbaa6" />
-<img width="237" height="234" alt="Снимок экрана 2026-04-24 104420" src="https://github.com/user-attachments/assets/2144960b-2275-4f50-9db5-dc4066a6dc9e" />
+<img width="250" height="234" alt="Снимок экрана 2026-04-24 104155" src="https://github.com/user-attachments/assets/e610b322-0506-4be0-ad19-74bbd09cbaa6" />
+<img width="250" height="234" alt="Снимок экрана 2026-04-24 104420" src="https://github.com/user-attachments/assets/2144960b-2275-4f50-9db5-dc4066a6dc9e" />
 
 Steering System:
 One medium motor controlling the front wheels using Ackermann steering geometry for smoother and more realistic turning.
 Sensors:
 Two ultrasonic sensors mounted at the front sides of the robot for obstacle detection and wall tracking.
+<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/cdc34a6c-c180-40af-be0f-f3873f82f916" />
 One gyro sensor placed in the center of the robot for orientation and angle correction.
+<img width="234" height="234" alt="image" src="https://github.com/user-attachments/assets/2142c02a-aae0-4414-9c3e-9f24fb58de8b" />
+
 Software Structure
 The control software is organized into several logical modules:
 Movement Module
@@ -65,7 +68,7 @@ Combines sensor data and movement logic to follow the track, handle turns, and a
 How It Works
 The robot starts moving forward using the rear-wheel drive system.
 Ultrasonic sensors continuously measure the distance to walls/obstacles.
-<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/cdc34a6c-c180-40af-be0f-f3873f82f916" />
+
 
 The robot adjusts its position to stay aligned with the track.
 Before turns, the robot calculates the angle using sensor data.
