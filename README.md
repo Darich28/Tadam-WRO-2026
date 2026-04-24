@@ -110,6 +110,30 @@ We tried to balance accuracy and energy consumption. Adding more sensors could i
 We calibrate the gyro before each run and apply simple filtering to ultrasonic data to reduce noise.
 
 If one sensor gives unstable readings, the robot relies on the other sensors to maintain stable behavior.
+### Сравнение источников питания LEGO Mindstorms EV3
+
+В этой таблице приведено сравнение фирменного перезаряжаемого литий-ионного аккумулятора (LEGO 45501) и стандартных щелочных батареек типа АА (пальчиковых).
+
+### Power Source Comparison: LEGO Mindstorms EV3
+
+This table provides a technical comparison between the official LEGO Rechargeable DC Battery (45501) and standard AA Alkaline batteries for the EV3 Intelligent Brick.
+
+| Feature | EV3 Rechargeable DC Battery (Li-Ion) | Standard Alkaline Batteries (6x AA) |
+| :--- | :--- | :--- |
+| **Chemistry** | Lithium-Ion (Li-Ion) | Alkaline (Manganese Dioxide) |
+| **Nominal Voltage** | 7.4 V | 9.0 V (6 x 1.5 V) |
+| **Energy Capacity** | 2050 mAh | Variable (typically 1500-2500 mAh) |
+| **Weight** | Lightweight (optimizes power-to-weight ratio) | Heavier (adds significant dead weight) |
+| **Form Factor** | Increases Brick depth (requires expanded housing) | Maintains standard low-profile dimensions |
+| **Discharge Profile** | Flat (consistent motor performance) | Sloped (voltage drops over time, affecting RPM) |
+| **Maintenance** | In-chassis charging via DC adapter | Requires manual replacement/external charging |
+| **Lifecycle** | Reusable (500+ charge cycles) | Single-use (high environmental waste) |
+| **Economic Impact** | High initial CAPEX / Low OPEX | Low initial CAPEX / High long-term OPEX |
+
+#### Key Recommendations
+* **For Competitive Robotics:** The **Rechargeable Battery** is preferred for its consistent voltage discharge, ensuring that PID controllers and motor degrees remain predictable throughout a match.
+* **For Compact Designs:** If the robot’s vertical clearance is critical, **AA batteries** allow for a slimmer profile as they do not require the expanded battery cover.
+* **For Sustainability:** The rechargeable solution significantly reduces hazardous waste and is the more cost-effective choice for long-term development cycles.
 
 Software Architecture and Strategy
 -----
