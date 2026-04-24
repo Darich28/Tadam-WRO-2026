@@ -9,6 +9,7 @@
 !['Our team photos'](t-photos) 
 -------
 !['Vehicle photos'](v-photos) 
+-------
 * `video` contains the video.md file with the link to a video where driving demonstration exists
 * `schemes` contains one or several schematic diagrams in form of JPEG, PNG or PDF of the electromechanical components illustrating all the elements (electronic components and motors) used in the vehicle and how they connect to each other.
 * `src` contains code of control software for all components which were programmed to participate in the competition
