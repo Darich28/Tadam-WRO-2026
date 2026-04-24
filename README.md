@@ -47,10 +47,13 @@ Two medium motors connected through a gear system and differential, powering the
 <img width="250" height="234" alt="Снимок экрана 2026-04-24 104420" src="https://github.com/user-attachments/assets/2144960b-2275-4f50-9db5-dc4066a6dc9e" />
 
 Steering System:
+==
 One medium motor controlling the front wheels using Ackermann steering geometry for smoother and more realistic turning.
+
 Sensors:
+==
 Two ultrasonic sensors mounted at the front sides of the robot for obstacle detection and wall tracking.
-<img width="600" height="500" alt="image" src="https://github.com/user-attachments/assets/cdc34a6c-c180-40af-be0f-f3873f82f916" />
+<img width="254" height="234" alt="image" src="https://github.com/user-attachments/assets/cdc34a6c-c180-40af-be0f-f3873f82f916" />
 One gyro sensor placed in the center of the robot for orientation and angle correction.
 <img width="234" height="234" alt="image" src="https://github.com/user-attachments/assets/2142c02a-aae0-4414-9c3e-9f24fb58de8b" />
 
