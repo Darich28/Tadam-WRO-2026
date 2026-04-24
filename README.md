@@ -73,6 +73,7 @@ Combines sensor data and movement logic to follow the track, handle turns, and a
 How It Works
 The robot starts moving forward using the rear-wheel drive system.
 Ultrasonic sensors continuously measure the distance to walls/obstacles.
+<img width="700" height="670" alt="WhatsApp Image 2026-04-24 at 10 49 44" src="https://github.com/user-attachments/assets/d5afda39-8a67-4880-9984-5305157ece2f" />
 
 
 The robot adjusts its position to stay aligned with the track.
