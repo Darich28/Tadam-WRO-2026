@@ -43,6 +43,9 @@ EV3 Rechargeable Battery – provides power to the entire system.
 
 Drive System:
 Two medium motors connected through a gear system and differential, powering the rear wheels (rear-wheel drive).
+<img width="237" height="234" alt="Снимок экрана 2026-04-24 104155" src="https://github.com/user-attachments/assets/e610b322-0506-4be0-ad19-74bbd09cbaa6" />
+<img width="237" height="234" alt="Снимок экрана 2026-04-24 104420" src="https://github.com/user-attachments/assets/2144960b-2275-4f50-9db5-dc4066a6dc9e" />
+
 Steering System:
 One medium motor controlling the front wheels using Ackermann steering geometry for smoother and more realistic turning.
 Sensors:
