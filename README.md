@@ -23,6 +23,10 @@
 -------
 * `src` This section includes the algorithms and scripts responsible for the robot's mobility.
 -------
+!['schemes'](schemes)
+-------
+* `schemes` This file contains photos of our sensors and motors, steering diagrams, and other detailed technical information about the vehicle.
+-------
 ## Introduction
 
 Our robot is built on the LEGO EV3 platform and is designed for autonomous navigation in the Future Engineers competition.
