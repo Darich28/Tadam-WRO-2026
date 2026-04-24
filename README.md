@@ -56,6 +56,8 @@ Combines sensor data and movement logic to follow the track, handle turns, and a
 How It Works
 The robot starts moving forward using the rear-wheel drive system.
 Ultrasonic sensors continuously measure the distance to walls/obstacles.
+<img width="1000" height="980" alt="image" src="https://github.com/user-attachments/assets/cdc34a6c-c180-40af-be0f-f3873f82f916" />
+
 The robot adjusts its position to stay aligned with the track.
 Before turns, the robot calculates the angle using sensor data.
 The steering motor turns the front wheels accordingly.
@@ -66,4 +68,61 @@ The robot is connected to a computer via USB/Bluetooth.
 The program is compiled and uploaded directly to the EV3 brick.
 After uploading, the program is executed on the EV3 brick.
 
+
+
+##  Mobility and Mechanical Design
+
+
+Our robot uses rear-wheel drive with a differential and an Ackermann steering system. We chose this design because it allows smoother and more accurate turns. The differential helps the wheels rotate at different speeds during turns, which reduces slipping. Ackermann steering improves the turning trajectory, especially on tight corners.
+
+We also tested a tank drive system, but it was less stable and caused more errors due to slipping, so we decided not to use it.
+
+The main trade-off is that Ackermann steering is harder to build and requires careful calibration. However, it gives better control and consistency.
+
+We tested different speeds and turning angles to improve alignment before turns and reduce mistakes during navigation.
+
+Power and Sensor Architecture
+
+Our robot uses two ultrasonic sensors placed at the front sides and one gyro sensor in the center.
+
+The side placement of ultrasonic sensors helps detect walls earlier and adjust the path in advance. The gyro sensor is placed in the center to reduce noise and improve accuracy.
+
+We tried to balance accuracy and energy consumption. Adding more sensors could improve precision, but it would also increase power usage and processing delay.
+
+We calibrate the gyro before each run and apply simple filtering to ultrasonic data to reduce noise.
+
+If one sensor gives unstable readings, the robot relies on the other sensors to maintain stable behavior.
+
+Software Architecture and Strategy
+
+The program is divided into simple modules: movement control, sensor processing, and decision-making.
+
+We use a state-based approach:
+
+moving forward
+preparing for a turn
+turning
+realigning
+This makes the robot’s behavior easier to understand and debug.
+
+We also considered edge cases, such as incorrect sensor readings or sudden obstacles.
+
+To evaluate performance, we focused on:
+
+number of successful laps in a row
+turning accuracy
+lap time
+⸻
+
+Systems Thinking and Engineering Decisions
+
+We treated the robot as a connected system where mechanics, sensors, and code all affect each other.
+
+For example, mechanical design affects how accurate the sensors are, and sensor accuracy affects the control algorithm.
+
+We made decisions based on stability rather than maximum speed.
+
+Some risks we identified include gyro drift, ultrasonic delay, and accumulated error over time.
+
+To reduce these risks, we use calibration, simple filtering, and limit extreme movements.
 
