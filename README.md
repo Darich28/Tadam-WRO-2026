@@ -49,6 +49,8 @@ Two medium motors connected through a gear system and differential, powering the
 Steering System:
 ==
 One medium motor controlling the front wheels using Ackermann steering geometry for smoother and more realistic turning.
+<img width="696" height="397" alt="image" src="https://github.com/user-attachments/assets/cd35eabb-cdeb-4db7-8bc4-3fad533100af" />
+
 
 Sensors:
 ==
