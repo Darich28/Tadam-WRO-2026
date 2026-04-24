@@ -100,7 +100,7 @@ The main trade-off is that Ackermann steering is harder to build and requires ca
 We tested different speeds and turning angles to improve alignment before turns and reduce mistakes during navigation.
 
 Power and Sensor Architecture
-
+-----
 Our robot uses two ultrasonic sensors placed at the front sides and one gyro sensor in the center.
 
 The side placement of ultrasonic sensors helps detect walls earlier and adjust the path in advance. The gyro sensor is placed in the center to reduce noise and improve accuracy.
@@ -112,7 +112,7 @@ We calibrate the gyro before each run and apply simple filtering to ultrasonic d
 If one sensor gives unstable readings, the robot relies on the other sensors to maintain stable behavior.
 
 Software Architecture and Strategy
-
+-----
 The program is divided into simple modules: movement control, sensor processing, and decision-making.
 
 We use a state-based approach:
@@ -133,7 +133,7 @@ lap time
 ⸻
 
 Systems Thinking and Engineering Decisions
-
+------
 We treated the robot as a connected system where mechanics, sensors, and code all affect each other.
 
 For example, mechanical design affects how accurate the sensors are, and sensor accuracy affects the control algorithm.
