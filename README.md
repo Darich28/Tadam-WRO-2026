@@ -36,7 +36,11 @@ Hardware Overview
 
 The vehicle consists of the following main components:
 EV3 Intelligent Brick – the main controller that processes all data and runs the program.
+<img width="237" height="234" alt="image" src="https://github.com/user-attachments/assets/6258a982-27e0-4ebd-a3d7-50781e740d63" />
+
 EV3 Rechargeable Battery – provides power to the entire system.
+<img width="237" height="234" alt="image" src="https://github.com/user-attachments/assets/f6caa14f-511b-473e-ae52-0074fb8e486c" />
+
 Drive System:
 Two medium motors connected through a gear system and differential, powering the rear wheels (rear-wheel drive).
 Steering System:
